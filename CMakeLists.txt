@@ -7,15 +7,10 @@ find_package(catkin REQUIRED COMPONENTS
   geometry_msgs
   message_filters
   roscpp
-  rosgraph
-  rospy
   tf2
   tf2_msgs
-  tf2_py
 )
 find_package(Boost REQUIRED COMPONENTS thread)
-
-catkin_python_setup()
 
 catkin_package(
   INCLUDE_DIRS include
@@ -26,10 +21,8 @@ catkin_package(
   geometry_msgs
   message_filters
   roscpp
-  rosgraph
   tf2
   tf2_msgs
-  tf2_py
 )
 
 include_directories(include ${catkin_INCLUDE_DIRS})
@@ -83,39 +76,3 @@ install(TARGETS
 install(DIRECTORY include/${PROJECT_NAME}/
   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
 )
-
-
-# Tests
-if(CATKIN_ENABLE_TESTING)
-
-# new requirements for testing
-find_package(catkin REQUIRED COMPONENTS
-  actionlib
-  actionlib_msgs
-  geometry_msgs
-  message_filters
-  roscpp
-  rosgraph
-  rospy
-  rostest
-  tf2
-  tf2_msgs
-  tf2_py
-)
-
-
-
-# tf2_ros_test_listener
-add_executable(${PROJECT_NAME}_test_listener EXCLUDE_FROM_ALL test/listener_unittest.cpp)
-add_dependencies(${PROJECT_NAME}_test_listener tf2_msgs_gencpp)
-target_link_libraries(${PROJECT_NAME}_test_listener
-  ${PROJECT_NAME}
-  ${catkin_LIBRARIES}
-  ${GTEST_LIBRARIES}
-)
-
-add_dependencies(tests ${PROJECT_NAME}_test_listener)
-
-add_rostest(test/transform_listener_unittest.launch)
-
-endif()
